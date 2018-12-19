@@ -1,6 +1,7 @@
 package com.eddie.viewpager;
 
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,24 +23,41 @@ public class InfinityScroll extends AppCompatActivity {
 
         infinityPager = findViewById(R.id.infinity_page_view);
 
-        final MyAdapter adapter = new MyAdapter(getSupportFragmentManager());
+        MyAdapter adapter = new MyAdapter(getSupportFragmentManager());
         //infinityPager.setOffscreenPageLimit(0);
         infinityPager.setAdapter(adapter);
-        infinityPager.setCurrentItem(adapter.getCount() / 2);
+        infinityPager.setCurrentItem(adapter.getCount() / 2, false);
 
     }
 
     class MyAdapter extends FragmentStatePagerAdapter {
 
+        private PageFragment[] arr;
 
         public MyAdapter(FragmentManager fm) {
 
             super(fm);
+
+            arr = new PageFragment[10];
+            Random random = new Random();
+            /*
+            int r = random.nextInt(256);
+            int g = random.nextInt(256);
+            int b = random.nextInt(256);
+            int color = Color.rgb(r, g, b);
+            */
+
+            for (int i = 0; i < 10; i++) {
+
+                arr[i] = PageFragment.newInstance(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)), i);
+            }
+
         }
 
         @Override
         public Fragment getItem(int position) {
 
+            /*
             Random random = new Random();
             int r = random.nextInt(256);
             int g = random.nextInt(256);
@@ -47,12 +65,23 @@ public class InfinityScroll extends AppCompatActivity {
             int color = Color.rgb(r, g, b);
 
             return PageFragment.newInstance(color, position);
+            */
+
+            return arr[position % arr.length];
         }
 
         @Override
         public int getCount() { // Count how many fragments we want to create
 
             return 1000;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+
+            return "Page " + position % arr.length;
+            //return super.getPageTitle(position);
         }
     }
 }

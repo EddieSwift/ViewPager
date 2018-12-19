@@ -40,7 +40,8 @@ public class PageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         TextView titleTxt = view.findViewById(R.id.title_txt);
         FrameLayout root = view.findViewById(R.id.root_container);
-        titleTxt.setText("Page " + position % 10);
+//        titleTxt.setText("Page " + position % 10);
+        titleTxt.setText("Page " + position);
         root.setBackgroundColor(color);
 
         return view;
